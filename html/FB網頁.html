@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+
+    <body>
+        <!-- navbar：導航欄-->
+        <!-- expand-sm：當螢幕寬度超過最小尺寸，自動擴展已顯示所有元素-->
+        <!-- flex：指定主軸包裹的屬性-->
+        <!-- nowrap：內容不會包裹，文字超出範圍會縮小適應，不換行(default)-->
+        <nav class="navbar navbar-wxpand-sm flex-nowrap">
+
+            <!-- container：把內容裝進容器-->
+            <div class="container flex-nowrap">
+
+                <!-- navbar-brand：品牌標誌-->
+                <!-- href="#"：點擊後不會導致頁面跳轉-->
+                <a class="navbar-brand" href="#">
+                    <!-- i：斜體文本-->
+                    <!-- fab：Font Awesome提供的品牌圖示-->
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <!-- input-group：一個文本書入框和一個按鈕的組合-->
+                <div class="input-group">
+                    <!-- form-control：用於收集用戶輸入的數據-->
+                    <!-- placeholder：文字框-->
+                    <input type="text" class="form-control" placeholder="搜尋"
+                    <div class="input-group-append">
+                        <!-- class：指定類型/樣式-->
+                        <!-- btn-outline-secondary：Bootstrap中的內建外觀-->
+                        <!-- type：指定功能-->
+                        <!-- button：只有按鈕功能，沒有提交表單等等的功能-->
+                        <button class="btn btn-outline-secondary" type="button">
+                            <!-- fas：Font Awesome字體圖示庫提供的實心圖示-->
+                            <!-- fa-search：搜索圖示-->
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- ml-auto navbar-right：右側導航欄-->
+                <div class="ml-auto navbar-right">
+                    <div class="avatar-thumbnail" data-target="avatar-thumbnail">
+                        <!-- src：source，用於指定外部資源的位置-->
+                        <!-- alt：img的屬性，用於提供圖像的替代文本-->
+                        <img src="https://scontent.fkhh5-1.fna.fbcdn.net/v/t1.6435-1/186566656_1460605220940756_6315691949419109761_n.jpg?stp=dst-jpg_p320x320&_nc_cat=109&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=vjZ7qcs15TAAX8LL460&_nc_ht=scontent.fkhh5-1.fna&oh=00_AfAcRo5kzcfMb9-CgqRfjmP1rCCQEQlAp-PKARN8GgOGfw&oe=65502336" alt="avatar">
+                        <!-- span：文字顯示-->
+                        <span> Evelyn Lee </span>>
+                    </div>
+                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-comment"></i>
+                    <i class="fas fa-bell"
+                </div>
+            </div>
+        </nav>
+
+        <!-- pb-5：paddling-上下邊距大小=5，位在Bottom-->
+        <div class="container pb-5">
+            <!-- section：區塊(通常內含headers)-->
+            <!-- mb-3：margin-外邊距=3，位在bottom-->
+            <section class="header mb-3">
+                <!-- card：顯示訊息內容的卡片-->
+                <!-- mx-auto：margin水平方向置中對齊-->
+                <div class="card mx-auto">
+                    <img src="https://scontent.fkhh5-1.fna.fbcdn.net/v/t39.30808-6/290799760_1743110709356871_5261941291582363299_n.jpg?stp=cp6_dst-jpg&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=cBUPmlkzwE0AX92R3m8&_nc_ht=scontent.fkhh5-1.fna&oh=00_AfDdDDEtGPKbRkkv9_pjFkwC1wiXkB8YHawhgkOZ8w-4pg&oe=652D795C" class="card-img-top" alt="landscape">
+                    <div data-target="profile">
+                        <img class="avatar" src="https://scontent.fkhh5-1.fna.fbcdn.net/v/t1.6435-1/186566656_1460605220940756_6315691949419109761_n.jpg?stp=dst-jpg_p320x320&_nc_cat=109&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=vjZ7qcs15TAAX8LL460&_nc_ht=scontent.fkhh5-1.fna&oh=00_AfAcRo5kzcfMb9-CgqRfjmP1rCCQEQlAp-PKARN8GgOGfw&oe=65502336" alt="avatar">
+                        <h3 class="name">Evelyn Lee</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <nav class="nav">
+                        <a class="nav-link" href="#">動態時報</a>
+                        <a class="nav-link active" href="#">關於</a>
+                        <a class="nav-link" href="#">朋友</a>
+                    </nav>
+                </div>
+            </section>
+
+            <sectioin class="about mb-3">
+                <div class="card mx-auto">
+                    <div class="card-header">
+                        <i class="fas fa-user mr-3"></i>
+                        <span> 關於 </span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush" data-target="personal-info">
+                            
+                            <li class="list-group-item">
+                                <i class="fas fa-envelope fa-fw"></i>
+                                <span>yi.jie.lee890418@gmail.com</span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <i class="fas fa-birthday-cake fa-fw"></i>
+                                <span>2000/04/18</span>
+                        </ul>
+                    </div>
+                </div>
+            </sectioin>
+
+            <section>
+                <div class="friends">
+                    <div class="card mx-auto">
+
+                        <div class="card-header">
+                            <i class="fas fa-user-friends mr-3"></i>
+                            <span>朋友</span>
+                        </div>
+
+                        <div class="card-body" data-target="user-friends">
+                            <img src="https://scontent.fkhh5-1.fna.fbcdn.net/v/t39.30808-1/298397381_5674940345901985_4110368670502328520_n.jpg?stp=dst-jpg_p320x320&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=iv17q7lZnC0AX9Dcb2V&_nc_ht=scontent.fkhh5-1.fna&oh=00_AfB9XIzl5AL_EDohl0bhBj4WjjogQYQWa5oxIdwyhFc7Vg&oe=652DD371" alt="台南捐血站" class="friend-avatar">                   
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
