@@ -1,8 +1,14 @@
 -- 查詢 --
 SELECT  A.*, B.COL1, C.COL2
+  CONCAT('把', '這串', '連起來'),  -- 連結運算子
+  A.COL1 || A.COL2 || A.COL3,  -- 連結運算子
+
   FROM A_TABLE_NAME A, B_TABLE_NAME B
   LEFT JOIN C_TABLE_NAME C ON C.COL1 = B.COL1
-  WHERE A.COL1 > 500
+  WHERE A.COL1 > 500  -- 大於>、小於>、等於=、等於(可比較NULL)<=>、不等於<>、大於等於>=、小於等於<=、
+  AND A.COL2 BETWEEN MIN AND '1121231'  -- 指定範圍比較
+  AND A.COL3 IN (400, 500, 600)  -- 指定集合比較
+  AND A.COL4 LIKE '%THIS%'  -- 萬用字元搜查(無論前or後，有包含'THIS'的字串)
   ORDER BY A.COL1
 
 -- 新增 --
