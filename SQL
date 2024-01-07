@@ -9,6 +9,7 @@ SELECT  A.*, B.COL1, C.COL2
   AND A.COL2 BETWEEN MIN AND '1121231'  -- 指定範圍比較
   AND A.COL3 IN (400, 500, 600)  -- 指定集合比較
   AND A.COL4 LIKE '%THIS%'  -- 萬用字元搜查(無論前or後，有包含'THIS'的字串)
+  AND A.COL5 LIKE '___'  -- 萬用字元搜查(僅有3個字元的字串)
   ORDER BY A.COL1
 
 -- 新增 --
