@@ -1,12 +1,21 @@
 //按下Enter可跳轉到下一個textbox
 private void SetKeyPress(object sender, KeyPressEventArgs e)
         {
+            Textbox txt = sender as Textbox;
             if (e.KeyChar == (char)Keys.Enter)  
             {
                 SelectNextControl((Control)sender, true, true, true, true);
+                if ( string.IsNullOrWhiteSpace(txt.Text) )  return;
+                switch (txt.Name)
+                {
+                        default:
+                                return;
+                }
             }
             else
             {
                 CommonBLL.SetEngNumKeyPress(e);
             }
         }
+
+
