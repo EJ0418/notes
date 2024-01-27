@@ -18,4 +18,18 @@ private void SetKeyPress(object sender, KeyPressEventArgs e)
             }
         }
 
+//讓畫面暫時停留，等待使用者按任意鍵
+ReadKey();
+
+//format to 特定格式
+string currency = "{0:C}, 500"; //貨幣 NT$500.00
+string _decimal = "{0:D4}, 500"; //十進位數，4位數，位數不足則左邊捕０
+string 小數加千分號 = "{0:N3}, 1234567"; //1,234.567
+string 十六進位  = "{0:X}, 1234"; //4D2
+string yesOrNo = "{0:Yes/No}, 0"; //0則No, 否則Yes
+string trueOrFalse = "{0:.True/False}, 0"; //0則No, 否則Yes
+string onOrOff = "{0:On/Off}, 0"; //0則No, 否則Yes
+科學記號 Ｅ
+含3位小數 Ｆ3
+一班格式 Ｇ
 
