@@ -1,17 +1,29 @@
 -- 查詢 --
-SELECT  A.*, B.COL1, C.COL2
-  CONCAT('把', '這串', '連起來'),  -- 連結運算子
-  A.COL1 || A.COL2 || A.COL3,  -- 連結運算子
-
-  FROM A_TABLE_NAME A, B_TABLE_NAME B
-  LEFT JOIN C_TABLE_NAME C ON C.COL1 = B.COL1
-  WHERE A.COL1 > 500  -- 大於>、小於>、等於=、等於(可比較NULL)<=>、不等於<>、大於等於>=、小於等於<=、
+SELECT  
+  A.*
+  , B.COL1
+  , SUBDATE(CURRENT_DATE, INTERVAL 1911 YEAR)  --  現在日期-1911年
+  , LAST_DAY(CURRENT_DATE)  --  取得特定月份的最後一天
+  , DATE_FORMAT(CURRENT_DATE)  --  將日期轉換成特定格式
+  --DATE_FORMAT(LAST_DAY(SUBDATE(CURRENT_DATE, INTERVAL 1911 YEAR)), '%Y%m%d')  -- 取得現在民國日期(?
+  , CONCAT('把', '這串', '連起來'),  -- 連結運算子
+  , A.COL1 || A.COL2 || A.COL3 || '把這串連起來',  -- 連結運算子
+-----------------------------------------------------------------------------------------------
+  FROM CHARTTABLE A, B_TABLE_NAME B
+  LEFT JOIN C_TABLE_NAME C ON B.COL1 = C.COL1 以等號左方資料為主
+-----------------------------------------------------------------------------------------------
+  WHERE 1=1
+  AND A.COL1 > 500  -- 大於>、小於>、等於=、等於(可比較NULL)<=>、不等於<>、大於等於>=、小於等於<=
   AND A.COL2 BETWEEN MIN AND '1121231'  -- 指定範圍比較
   AND A.COL3 IN (400, 500, 600)  -- 指定集合比較
   AND A.COL4 LIKE '%THIS%'  -- 萬用字元搜查(無論前or後，有包含'THIS'的字串)
   AND A.COL5 LIKE '___'  -- 萬用字元搜查(僅有3個字元的字串)
+-----------------------------------------------------------------------------------------------
+  GROUP BY A.COL1  --將資料群組
+    HAVING A.COL1 = VALUE1  --GROUPBY後的條件篩選用HAVING
+-----------------------------------------------------------------------------------------------
   ORDER BY A.COL1
-
+===============================================================================================
 -- 新增 --
 INSERT INTO A_TABLE_NAME
   (COL1, COL2, COL3)
@@ -24,6 +36,10 @@ UPDATE A_TABLE_NAME
       COL2 = VAL2,
       COL3 = VAL3
   WHERE CONDITION
+
+-- 刪除 --
+DELETE FROM A_TABLE_NAME
+  WHERE COL1 = VALUE1
 
 -- 刪除 --
 DELETE FROM A_TABLE_NAME
