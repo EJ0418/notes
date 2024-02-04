@@ -1,0 +1,12 @@
+【混淆矩陣】（Confusion Matrix）
+
+機器學習和統計中用來評估分類模型性能的一種表格。
+
+列：模型預測的類別
+行：實際類別。
+
+通常，混淆矩陣的行和列分為以下四個部分：
+True Positive(TP)：實際=Positive，預測=Positive。預測結果=True。
+False Positive(FP)： 實際=Nagative，預測=Positive。預測結果=False。
+True Negative(TN)： 實際=Nagative，預測=Nagative。預測結果=True。
+False Negative(FN)： 實際=Positive，預測=Nagative。預測結果=False。
