@@ -33,3 +33,17 @@ string onOrOff = "{0:On/Off}, 0"; //0則No, 否則Yes
 含3位小數 Ｆ3
 一班格式 Ｇ
 
+//背景執行，並可異動UI元素
+await Task.Run(() =>
+{
+    var resultList = Method(params);
+
+    this.Invoke((Action)(() =>
+    {
+        foreach (var result in resultList)
+        {
+            RtxtLog.Text += result.FullName + "，完成！\n";
+        }
+    }));
+});
+
