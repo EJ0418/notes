@@ -47,3 +47,14 @@ await Task.Run(() =>
     }));
 });
 
+//背景執行，似乎可以計算經過時間，並中斷(?) 未試過 先記起來
+Task task = Task.Factory.StartNew(() => 
+{
+    DoSomething();
+};
+while (!task.IsCompleted)
+{
+    Application.DoEvents();
+    Thread.Sleep(1);
+}
+
