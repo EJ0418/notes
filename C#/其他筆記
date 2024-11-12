@@ -1,0 +1,59 @@
+//按下Enter可跳轉到下一個textbox
+private void SetKeyPress(object sender, KeyPressEventArgs e)
+        {
+            Textbox txt = sender as Textbox;
+            if (e.KeyChar == (char)Keys.Enter)  
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+                if ( string.IsNullOrWhiteSpace(txt.Text) )  return;
+                switch (txt.Name)
+                {
+                        default:
+                                return;
+                }
+            }
+            else
+            {
+                CommonBLL.SetEngNumKeyPress(e);
+            }
+        }
+
+//讓畫面暫時停留，等待使用者按任意鍵
+ReadKey();
+
+//format to 特定格式
+string currency = "{0:C}, 500"; //貨幣 NT$500.00
+string _decimal = "{0:D4}, 500"; //十進位數，4位數，位數不足則左邊捕０
+string 小數加千分號 = "{0:N3}, 1234567"; //1,234.567
+string 十六進位  = "{0:X}, 1234"; //4D2
+string yesOrNo = "{0:Yes/No}, 0"; //0則No, 否則Yes
+string trueOrFalse = "{0:.True/False}, 0"; //0則No, 否則Yes
+string onOrOff = "{0:On/Off}, 0"; //0則No, 否則Yes
+科學記號 Ｅ
+含3位小數 Ｆ3
+一班格式 Ｇ
+
+//背景執行，並可異動UI元素
+await Task.Run(() =>
+{
+    var resultList = Method(params);
+
+    this.Invoke((Action)(() =>
+    {
+        foreach (var result in resultList)
+        {
+            RtxtLog.Text += result.FullName + "，完成！\n";
+        }
+    }));
+});
+
+//背景執行，似乎可以計算經過時間，並中斷(?) 未試過 先記起來
+Task task = Task.Factory.StartNew(() => 
+{
+    DoSomething();
+};
+while (!task.IsCompleted)
+{
+    Application.DoEvents();
+    Thread.Sleep(1);
+}
