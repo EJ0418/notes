@@ -1,22 +1,5 @@
-//按下Enter可跳轉到下一個textbox
-private void SetKeyPress(object sender, KeyPressEventArgs e)
-        {
-            Textbox txt = sender as Textbox;
-            if (e.KeyChar == (char)Keys.Enter)  
-            {
-                SelectNextControl((Control)sender, true, true, true, true);
-                if ( string.IsNullOrWhiteSpace(txt.Text) )  return;
-                switch (txt.Name)
-                {
-                        default:
-                                return;
-                }
-            }
-            else
-            {
-                CommonBLL.SetEngNumKeyPress(e);
-            }
-        }
+//按下Enter可跳轉到下一個元件
+SelectNextControl((Control)sender, true, true, true, true);
 
 //讓畫面暫時停留，等待使用者按任意鍵
 ReadKey();
