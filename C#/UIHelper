@@ -1,0 +1,383 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using static 模板.Models.GlobalConfigs;
+
+namespace 模板.Helper
+{
+    public static class UIHelper
+    {
+        #region //色組設定 [主色, 附屬色]
+
+        public static List<Color> BlueColorGroup = new List<Color>()
+            {
+                Color.FromArgb(149,176,215), Color.FromArgb(220,230,241)
+            };
+        public static List<Color> LightBlueColorGroup = new List<Color>()
+            {
+                Color.FromArgb(146,205,220), Color.FromArgb(218,238,243)
+            };
+        public static List<Color> GreenColorGroup = new List<Color>()
+            {
+                Color.FromArgb(196,215,155), Color.FromArgb(235,241,222)
+            };
+        public static List<Color> OrangeColorGroup = new List<Color>()
+            {
+                Color.FromArgb(250,191,143), Color.FromArgb(253, 233, 217)
+            };
+        public static List<Color> RedColorGroup = new List<Color>()
+            {
+                Color.FromArgb(218,150,148), Color.FromArgb(242,220,219)
+            };
+        public static List<Color> YellowColorGroup = new List<Color>() { Color.FromArgb(255, 255, 184), Color.FromArgb(255, 255, 184) };
+
+        #endregion
+
+        /// <summary>
+        /// 限制TextBox僅可輸入英文及數字
+        /// </summary>
+        public static void SetEngNumKeyPress(KeyPressEventArgs e)
+        {
+            if (e.KeyChar != 8
+            && !char.IsNumber(e.KeyChar)
+            && !char.IsLower(e.KeyChar)
+            && !char.IsUpper(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+            if ((int)e.KeyChar >= 97 | (int)e.KeyChar <= 122)
+            {
+                e.KeyChar = Char.ToUpper(e.KeyChar);
+            }
+        }
+
+        /// <summary>
+        /// 限制TextBox僅可輸入數字
+        /// </summary>
+        public static void SetNumKeyPress(KeyPressEventArgs e)
+        {
+            if (((int)e.KeyChar < 48 | (int)e.KeyChar > 57)
+               & (int)e.KeyChar != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        #region -- 【設定】DataGridView 顏色組合 --
+        /// <summary>
+        /// 行列配色
+        /// </summary>
+        /// <param name="dgv">要調整的DataGridView</param>
+        /// <param name="mainHeader">判斷是否為標題的欄位</param>
+        /// <returns></returns>
+        public static DataGridView SetRowColor(this DataGridView dgv, string mainHeader = "")
+        {
+            //預設色組
+            List<Color> dgvRColor = GreenColorGroup;
+
+            //設定顏色
+            foreach (DataGridViewRow dgvR in dgv.Rows)
+            {
+                if (!string.IsNullOrWhiteSpace(mainHeader) && dgvR.Cells[mainHeader].Value == null)
+                {
+                    dgvRColor = dgvRColor == BlueColorGroup ? GreenColorGroup : BlueColorGroup;
+                    dgvR.DefaultCellStyle.BackColor = dgvRColor[0];
+                    dgvR.DefaultCellStyle.Font = new Font("微軟正黑體", 14F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(136)));
+                    continue;
+                }
+                if (dgvR.Index % 2 == 1)
+                {
+                    dgvR.DefaultCellStyle.BackColor = Color.White;
+                }
+                else
+                {
+                    dgvR.DefaultCellStyle.BackColor = dgvRColor[1];
+                }
+            }
+            return dgv;
+        }
+        #endregion
+
+        #region -- 【設定】DataGridViewRow CheckBox勾選 --
+        /// <summary>
+        /// 設定DataGridViewRow CheckBox勾選，並設定文字顏色區隔
+        /// </summary>
+        /// <param name="dgvr"></param>
+        /// <param name="isChecked"></param>
+        public static void SetDgvRowChecked(this DataGridViewRow dgvr, bool isChecked)
+        {
+            dgvr.Cells[0].Value = isChecked;
+            dgvr.DefaultCellStyle.ForeColor = isChecked ? Color.Black : Color.Gray;
+            dgvr.DefaultCellStyle.SelectionForeColor = isChecked ? Color.Black : Color.Gray;
+        }
+        #endregion
+
+        #region -- 【顯示】"資料處理中" Panel --
+        /// <summary>
+        /// 顯示處裡中的Panel
+        /// </summary>
+        /// <param name="parentCtrl"></param>
+        /// <returns></returns>
+        public static Panel PerformProcessingPanel(Control parentCtrl)
+        {
+            int panWidth = 400;
+            int panHeight = 100;
+            int x = (parentCtrl.Width - panWidth) / 2;
+            int y = (parentCtrl.Height - panHeight) / 2;
+            Panel pan = new Panel()
+            {
+                Name = "PanProcess",
+                Margin = new Padding(5),
+                Location = new Point(x, y),
+                Size = new Size(400, 100),
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                BackColor = Color.FromArgb(194, 223, 255)
+            };
+            Label lbl = new Label()
+            {
+                Name = "lblProcess",
+                Anchor = AnchorStyles.None,
+                AutoSize = true,
+                Location = new Point(0, 0),
+                Dock = DockStyle.Fill,
+                Padding = new Padding(10, 10, 10, 10),
+                Margin = new Padding(5, 0, 5, 0),
+                Font = new Font("微軟正黑體", 42F, FontStyle.Bold, GraphicsUnit.Point, 136),
+                Text = "資料處理中"
+            };
+
+            Timer timer = new Timer()
+            {
+                Interval = 1000
+            };
+            timer.Tick += (s, args) =>
+            {
+                if (lbl.Text.Length > 10)
+                {
+                    lbl.Text = "資料處理中";
+                }
+                lbl.Text += ". ";
+            };
+
+            pan.Controls.Add(lbl);
+            lbl.BringToFront();
+            parentCtrl.Controls.Add(pan);
+            pan.BringToFront();
+
+            timer.Start();
+            return pan;
+        }
+        #endregion
+
+        #region -- 【元件】"設定密碼" Form --
+        /// <summary>
+        /// "設定/輸入密碼" Form
+        /// </summary>
+        /// <returns>密碼</returns>
+        public static DialogResult PerformPasswordForm(out string password, string frmText = "輸入密碼")
+        {
+            password = null;
+            string inputPassword = null;
+            Form frmSetPassword = new Form()
+            {
+                AutoScaleDimensions = new SizeF(10F, 20F),
+                AutoScaleMode = AutoScaleMode.Font,
+                BackColor = Color.FromArgb(232, 248, 252),
+                ClientSize = new Size(409, 137),
+                Font = new Font("微軟正黑體", 12F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(136))),
+                Margin = new System.Windows.Forms.Padding(5),
+                Name = "frmSetPassword",
+                Text = frmText,
+                Size = new Size(425, 176),
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label lblPassword = new Label()
+            {
+                AutoSize = true,
+                Font = new Font("微軟正黑體", 24F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(136))),
+                Location = new Point(15, 16),
+                Name = "lblPassword",
+                Size = new Size(113, 40),
+                TabIndex = 12,
+                Text = "密碼：",
+            };
+            TextBox txtPassword = new TextBox()
+            {
+                Font = new Font("微軟正黑體", 24F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(136))),
+                ImeMode = System.Windows.Forms.ImeMode.NoControl,
+                Location = new Point(142, 11),
+                Name = "txtPassword",
+                PasswordChar = '*',
+                Size = new Size(205, 50),
+                TabIndex = 10,
+            };
+            Button btnOK = new Button()
+            {
+                AutoSize = true,
+                BackColor = SystemColors.GradientInactiveCaption,
+                Font = new Font("微軟正黑體", 24F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(136))),
+                Location = new Point(162, 75),
+                Name = "btnOK",
+                Size = new Size(91, 50),
+                TabIndex = 11,
+                Text = "確定",
+                UseVisualStyleBackColor = false,
+            };
+            Button btnPeek = new Button()
+            {
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                Font = new Font("微軟正黑體", 24F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(136))),
+                Image = Properties.Resources.Eye,
+                Location = new Point(353, 21),
+                Name = "btnPeek",
+                Size = new Size(40, 30),
+                TabIndex = 13,
+                UseVisualStyleBackColor = false,
+            };
+
+            txtPassword.KeyPress += (s, e) =>
+            {
+                if (e.KeyChar == (char)Keys.Enter)
+                {
+                    btnOK.Focus();
+                }
+            };
+            btnOK.Click += (s, e) =>
+            {
+                if (txtPassword.Text.Length == 0)
+                {
+                    MessageBox.Show("請輸入密碼！", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                inputPassword = txtPassword.Text;
+                frmSetPassword.DialogResult = DialogResult.OK;
+            };
+            btnPeek.MouseHover += (s, e) =>
+            {
+                txtPassword.PasswordChar = '\0';
+            };
+            btnPeek.MouseLeave += (s, e) =>
+            {
+                txtPassword.PasswordChar = '*';
+            };
+            frmSetPassword.SuspendLayout();
+            frmSetPassword.Controls.Add(lblPassword);
+            frmSetPassword.Controls.Add(txtPassword);
+            frmSetPassword.Controls.Add(btnPeek);
+            frmSetPassword.Controls.Add(btnOK);
+            frmSetPassword.ResumeLayout(false);
+            frmSetPassword.PerformLayout();
+            password = inputPassword;
+            return frmSetPassword.DialogResult;
+        }
+        #endregion
+
+        /// <summary>
+        /// 控管欄位可用性
+        /// </summary>
+        /// <param name="group">控管區</param>
+        /// <param name="enable">可用性</param>
+        /// <param name="exceptions">排除項目</param>
+        public static void EnableCtrl(this Control group, bool enable, object exceptions = null)
+        {
+            foreach (Control ctrl in group.Controls)
+            {
+                if (ctrl.HasChildren)
+                {
+                    EnableCtrl(ctrl, enable, exceptions);
+                }
+                else if (exceptions is Control)
+                {
+                    if (ctrl != (Control)exceptions)
+                    {
+                        ctrl.Enabled = enable;
+                    }
+                }
+                else if (exceptions is List<Control>)
+                {
+                    if (!((List<Control>)exceptions).Contains(ctrl))
+                    {
+                        ctrl.Enabled = enable;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 清空指定的控制項中所有欄位的內容
+        /// </summary>
+        /// <param name="control">指定的控制項</param>
+        /// <param name="exceptions">排除項目</param>
+        public static void Clear(this Control control, List<Control> exceptions = null)
+        {
+            foreach (Control ctrl in control.Controls)
+            {
+                if (exceptions != null && exceptions.Contains(ctrl)) continue;
+
+                if (ctrl is TextBox)
+                {
+                    ((TextBox)ctrl).Text = string.Empty;
+                }
+                else if (ctrl is Label && ctrl.Name.Contains("name"))
+                {
+                    ((Label)ctrl).Text = string.Empty;
+                }
+                else if (ctrl is ComboBox)
+                {
+                    ((ComboBox)ctrl).SelectedIndex = -1;
+                }
+                else if (ctrl is DataGridView)
+                {
+                    ((DataGridView)ctrl).DataSource = null;
+                }
+                else if (ctrl is RadioButton)
+                {
+                    ((RadioButton)ctrl).Checked = false;
+                }
+                else if (ctrl is CheckBox)
+                {
+                    ((CheckBox)ctrl).Checked = false;
+                }
+                else if (ctrl is NumericUpDown)
+                {
+                    ((NumericUpDown)ctrl).ResetText();
+                }
+                else if (ctrl is RichTextBox)
+                {
+                    ((RichTextBox)ctrl).Clear();
+                }
+                else if (ctrl.HasChildren)
+                {
+                    Clear(ctrl);
+                }
+            }
+        }
+
+        public static void ChangeStatus(this ToolStripStatusLabel lblStatus, STATUS status)
+        {
+            switch (status)
+            {
+                case STATUS.資料查詢中:
+                    lblStatus.Text = STATUS.資料查詢中.ToString() + "...";
+                    lblStatus.ForeColor = Color.Blue;
+                    break;
+                case STATUS.資料查詢完畢:
+                    lblStatus.Text = STATUS.資料查詢完畢.ToString();
+                    lblStatus.ForeColor = Color.Green;
+                    break;
+                case STATUS.資料錯誤:
+                    lblStatus.Text = STATUS.資料錯誤.ToString();
+                    lblStatus.ForeColor = Color.Red;
+                    break;
+                default:
+                    lblStatus.Text = "(資料狀態)";
+                    lblStatus.ForeColor = Color.Gray;
+                    break;
+            }
+        }
+    }
+}
