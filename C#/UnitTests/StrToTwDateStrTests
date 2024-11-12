@@ -1,0 +1,153 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using 模板.Helper;
+
+namespace 模板Tests.Helper.DateTimeHelper
+{
+    [TestClass]
+    public class StrToTwDateStrTests
+    {
+        [TestMethod()]
+        public void TestNormalTwDateStr()
+        {
+            //input：民國年
+            string input = "1130101";
+            string expect = "1130101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestNormalWestDateStr()
+        {
+            //input：西元年
+            string input = "20240101";
+            string expect = "1130101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+
+        }
+
+        [TestMethod()]
+        public void TestBeforeTwDateStr()
+        {
+            //input：小於民國元年
+            string input = "19110101";
+            string expect = "-010101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestTwDateWithSlash()
+        {
+            //input：民國年(有"/")
+            string input = "113/01/01";
+            string expect = "1130101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestWestDateWithSlash()
+        {
+            //input：西元年(有"/")
+            string input = "2024/01/01";
+            string expect = "1130101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestNullDateStr()
+        {
+            //input：null
+            string input = null;
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestEmptyDateStr()
+        {
+            //input：Empty
+            string input = " ";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestWhiteSpaceDateStr()
+        {
+            //input：WhiteSpace
+            string input = " ";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestInvalidDateStr()
+        {
+            //input：大於民國元年
+            string input = "9999999";
+            Assert.ThrowsException<FormatException>(() => input.ToTwDateStr());
+        }
+
+        public void TestShorterDateStr()
+        {
+            string input = "11311";
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestLongerLength()
+        {
+            //input：字串長度大於7
+            string input = "113010101";
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat7()
+        {
+            //input：民國長度，but格式不對
+            string input = "0TwDate";
+            Assert.ThrowsException<FormatException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat8()
+        {
+            //input：西元長度，but格式不對
+            string input = "WestDate";
+            Assert.ThrowsException<FormatException>(() => input.ToTwDateStr());
+        }
+
+        [TestMethod()]
+        public void TestWestDateOutputWithSlash()
+        {
+            //input：正常DateTime
+            string input = "20240101";
+            string expect = "113/01/01";
+            string result = input.ToTwDateStr(true);
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestTwDateOutputWithSlash()
+        {
+            //input：正常DateTime
+            string input = "1130101";
+            string expect = "113/01/01";
+            string result = input.ToTwDateStr(true);
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestTwDateWithSpaces()
+        {
+            //input：空白
+            string input = "1130101 ";
+            string expect = "1130101";
+            string result = input.ToTwDateStr(false);
+            Assert.AreEqual(expect, result);
+        }
+    }
+}
