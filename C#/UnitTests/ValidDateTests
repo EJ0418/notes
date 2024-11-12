@@ -1,0 +1,154 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using 模板.Helper;
+
+namespace 模板Tests.Helper.DateTimeHelper
+{
+    [TestClass]
+    public class ValidDateTests
+    {
+        [TestMethod()]
+        public void TestNormalTwDate()
+        {
+            try
+            {
+                //input：民國年
+                string input = "1130101";
+                input.ValidDate();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [TestMethod()]
+        public void TestNormalWestDate()
+        {
+            try
+            {
+                //input：西元年
+                string input = "20240101";
+                input.ValidDate();
+                Assert.IsTrue(true);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [TestMethod()]
+        public void TestBeforeTwDate()
+        {
+            try
+            {
+                //input：小於民國元年
+                string input = "19110101";
+                input.ValidDate();
+                Assert.IsTrue(true);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [TestMethod()]
+        public void TestTwDateWithSlash()
+        {
+            try
+            {
+                //input：民國年(有"/")
+                string input = "113/01/01";
+                input.ValidDate();
+                Assert.IsTrue(true);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [TestMethod()]
+        public void TestWestDateWithSlash()
+        {
+            try
+            {
+                //input：西元年(有"/")
+                string input = "2024/01/01";
+                input.ValidDate();
+                Assert.IsTrue(true);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [TestMethod()]
+        public void TestNullDate()
+        {
+            //input：null
+            string input = null;
+            Assert.ThrowsException<ArgumentNullException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestEmptyDate()
+        {
+            //input：空字串
+            string input = "";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestWhiteSpaceDate()
+        {
+            //input：空白字串
+            string input = " ";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestInvalidDate()
+        {
+            //input：大於民國元年
+            string input = "9999999";
+            Assert.ThrowsException<FormatException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestShorterLength()
+        {
+            //input：字串長度小於7
+            string input = "11301";
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => input.ValidDate());
+        }
+
+
+        [TestMethod()]
+        public void TestLongerLength()
+        {
+            //input：字串長度大於7
+            string input = "113010101";
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat7()
+        {
+            //input：民國長度，but格式不對
+            string input = "0TwDate";
+            Assert.ThrowsException<FormatException>(() => input.ValidDate());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat8()
+        {
+            //input：西元長度，but格式不對
+            string input = "WestDate";
+            Assert.ThrowsException<FormatException>(() => input.ValidDate());
+        }
+    }
+}
