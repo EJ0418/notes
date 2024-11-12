@@ -1,0 +1,128 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using 模板.Helper;
+
+namespace 模板Tests.Helper.DateTimeHelper
+{
+    [TestClass]
+    public class StrToTimeTests
+    {
+        [TestMethod()]
+        public void TestHHmmStr()
+        {
+            //input：正常HHmm
+            string input = "1730";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(0);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestHHmmssDateStr()
+        {
+            //input：正常HHmmss
+            string input = "173020";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(20);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+
+        }
+
+        [TestMethod()]
+        public void TestHHmmWithColon()
+        {
+            //input：HHmm(有":")
+            string input = "17:30";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(0);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestHHmmssWithColon()
+        {
+            //input：HHmmss(有":")
+            string input = "17:30:20";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(20);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestNullDateStr()
+        {
+            //input：null
+            string input = null;
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestEmptyDateStr()
+        {
+            //input：Empty
+            string input = "";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestWhiteSpaceDateStr()
+        {
+            //input：WhiteSpace
+            string input = " ";
+            Assert.ThrowsException<ArgumentNullException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestInvalidTimeStr()
+        {
+            //input：非正常time格式
+            string input = "999999";
+            Assert.ThrowsException<FormatException>(() => input.ToTime());
+        }
+
+
+        [TestMethod()]
+        public void TestLongerLength()
+        {
+            //input：字串長度大於6
+            string input = "1730201";
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat4()
+        {
+            //input：HHmm長度，but格式不對
+            string input = "Time";
+            Assert.ThrowsException<FormatException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestInvalidFormat6()
+        {
+            //input：HHmmss長度，but格式不對
+            string input = "00Time";
+            Assert.ThrowsException<FormatException>(() => input.ToTime());
+        }
+
+        [TestMethod()]
+        public void TestHHmmWithSpace()
+        {
+            //input：正常HHmm + 空格
+            string input = "1730 ";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(0);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestHHmmssWithSpace()
+        {
+            //input：正常HHmmss + 空格
+            string input = "173020 ";
+            DateTime expect = DateTime.Today.AddHours(17).AddMinutes(30).AddSeconds(20);
+            DateTime result = input.ToTime();
+            Assert.AreEqual(expect, result);
+        }
+    }
+}
