@@ -1,0 +1,61 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using 模板.Helper;
+
+namespace 模板Tests.Helper.DateTimeHelper
+{
+    [TestClass]
+    public class DtToTwDateStrTests
+    {
+        [TestMethod()]
+        public void TestNormalDate()
+        {
+            //input：正常DateTime
+            DateTime input = new DateTime(2024, 1, 1);
+            string expect = "1130101";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestNormalDateOutputWithSlash()
+        {
+            //input：正常DateTime
+            DateTime input = new DateTime(2024, 1, 1);
+            string expect = "113/01/01";
+            string result = input.ToTwDateStr(true);
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestBeforeTwDate()
+        {
+            //input：小於民國元年
+            DateTime input3 = new DateTime(1911, 1, 1);
+            string expect = "-010101";
+            string result3 = input3.ToTwDateStr();
+            Assert.AreEqual(expect, result3);
+        }
+
+        [TestMethod()]
+        public void TestOverMaxTwDate()
+        {
+            //input：超過民國最大年
+            DateTime input = new DateTime(3000, 12, 31);
+            string expect = "9991231";
+            string result = input.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+        [TestMethod()]
+        public void TestNullDate()
+        {
+            //input：null
+            DateTime? input = null;
+            string expect = null;
+            string result = input?.ToTwDateStr();
+            Assert.AreEqual(expect, result);
+        }
+
+    }
+}
