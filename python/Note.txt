@@ -1,0 +1,7 @@
+套件：
+twstock：台股的歷史資料。
+pandas：表格化工具。
+matplotlib.pyplot：圖表繪製工具。
+MinMaxScaler：可以進行資料標準化（壓縮到 0-1 範圍）。
+numpy：處理陣列數據。
+Sequential、LSTM ：建立、訓練神經網路模型。
